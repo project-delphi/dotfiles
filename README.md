@@ -1,6 +1,6 @@
 # Dot Files
 
-![]()
+![](./images/dotfiles.png)
 
 Image from https://github.com/jglovier
 
