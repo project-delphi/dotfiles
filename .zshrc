@@ -1,0 +1,66 @@
+######################################## Needed for Docker ###########################################
+# Environment variables
+export PYTHONDONTWRITEBYTECODE=1
+# aliases
+alias python=python3
+alias pip=pip3
+
+# docker commands
+# start jupyter in docker container using bash function
+function start_jupyter {
+    PORT=10000
+    HOST=http://localhost:$PORT
+    echo "Starting Jupyter container"
+    docker stop jupyter >/dev/null 2>&1
+    docker rm jupyter >/dev/null 2>&1
+    docker run \
+    --name jupyter \
+    --rm \
+    -d \
+    -p $PORT:8888 \
+    -e JUPYTER_ENABLE_LAB=yes \
+    -e GRANT_SUDO=yes \
+    --user root \
+    -v $HOME:/home/jovyan/work \
+    jupyter/datascience-notebook \
+    start.sh jupyter lab --NotebookApp.token=''
+    for (( ; ; )); do
+        curl --silent $HOST
+        if [[ $? == 0 ]]; then
+            break
+        fi
+        echo "Waiting for notebook to start..."
+        sleep 1
+    done
+    open $HOST
+    echo "Notebook started at $HOST"
+}
+
+function start_rstudio {
+    PORT=18787
+    HOST=http://localhost:$PORT
+    echo "Starting Rstudio container"
+    docker stop rstudio >/dev/null 2>&1
+    docker rm rstudio >/dev/null 2>&1
+    docker run \
+    --name rstudio \
+    --rm \
+    -d \
+    -p $PORT:8787 \
+    -e "ROOT=TRUE" \
+    -e DISABLE_AUTH=true \
+    -v $HOME:/home/rstudio \
+    rocker/rstudio
+    for (( ; ; )); do
+        curl --silent $HOST
+        if [[ $? == 0 ]]; then
+            break
+        fi
+        echo "Waiting for Rstudio to start..."
+        sleep 1
+    done
+    open $HOST
+    echo "Notebook started at $HOST"
+}
+
+#####################################################################################################
