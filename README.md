@@ -29,6 +29,10 @@ They are configured using hidden dot files stored in the users home directory.
 
 (Type `echo $HOME` to see your home directory.)
 
+### MacOS
+
+zsh is now the [default on MacOS Catalina onwards](https://support.apple.com/en-us/HT208050)
+
 ### Terminal - bash: `.bashrc` and `.bash_profile`
 
 If you use Terminal, then your default shell program is `bash`.
