@@ -10,7 +10,7 @@ alias pip=pip3
 function start_jupyter {
     PORT=10000
     HOST=http://localhost:$PORT
-    echo "Starting Jupyter container"
+    echo "Starting JupyterLab container"
     docker stop jupyter >/dev/null 2>&1
     docker rm jupyter >/dev/null 2>&1
     docker run \
@@ -29,7 +29,36 @@ function start_jupyter {
         if [[ $? == 0 ]]; then
             break
         fi
-        echo "Waiting for notebook to start..."
+        echo "Waiting for JupyterLab to start..."
+        sleep 1
+    done
+    open $HOST
+    echo "JupyterLab started at $HOST"
+}
+
+function start_jupyter_notebook {
+    PORT=10001
+    HOST=http://localhost:$PORT
+    echo "Starting Jupyter notebook container"
+    docker stop jupyter >/dev/null 2>&1
+    docker rm jupyter >/dev/null 2>&1
+    docker run \
+    --name jupyter_notebook \
+    --rm \
+    -d \
+    -p $PORT:8888 \
+    -e JUPYTER_ENABLE_LAB=yes \
+    -e GRANT_SUDO=yes \
+    --user root \
+    -v $HOME:/home/jovyan/work \
+    jupyter/datascience-notebook \
+    start.sh jupyter notebook --NotebookApp.token=''
+    for (( ; ; )); do
+        curl --silent $HOST
+        if [[ $? == 0 ]]; then
+            break
+        fi
+        echo "Waiting for Jupyter notebook to start..."
         sleep 1
     done
     open $HOST
@@ -62,5 +91,4 @@ function start_rstudio {
     open $HOST
     echo "Notebook started at $HOST"
 }
-
 #####################################################################################################
