@@ -62,13 +62,14 @@ brew install caskroom/cask/brew-cask
 echo "Making directories"
 mkdir -p $HOME/Projects/repos
 mkdir $HOME/Projects/data
+mkdir $HOME/Projects/scratch
 mkdir $HOME/Desktop/screenshots
 mkdir $HOME/Downloads/incomplete
 
 echo "Copying dotfiles from Github"
 cd ~
-git clone git@github.com:project-delphi/dotfiles.git $HOME/.dotfiles
-cd .dotfiles
+git clone git@github.com:project-delphi/dotfiles.git $HOME/Projects/repos/.dotfiles
+cd  $HOME/Projects/repos/.dotfiles
 
 
 #Install Zsh & Oh My Zsh
@@ -88,18 +89,17 @@ chsh -s /bin/zsh
 cask_apps=(
   alfred
   alt-tab
-  chromecast
   docker
-  edge
+  microsoft-edge
   firefox
   google-chrome
   iterm2
-  onepassword
+  1password
   rectangle
   skype
   slack
   spotify
-  transmission
+  transmission-cli
   visual-studio-code
   vlc
   zoomus
@@ -108,9 +108,9 @@ cask_apps=(
 # Install apps to /Applications
 # Default is: /Users/$user/Applications
 echo "Installing apps with Cask..."
-brew cask install --appdir="/Applications" ${cask_apps[@]}
+brew install --cask --appdir="/Applications" ${cask_apps[@]} 
 
-brew cask alfred link
+brew link --cask alfred 
 
 brew cleanup
 
@@ -248,4 +248,3 @@ defaults write com.apple.dock mru-spaces -bool false
 killall Finder
 
 echo "Done!"
-
