@@ -27,9 +27,13 @@ echo "Git config"
 git config --global user.name "Ravi Kalia"
 git config --global user.email ravkalia@gmail.com
 
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+
+
 echo "Installing other brew stuff..."
 
-apps=(oh-my-zsh
+apps=(
   fortune
   fzf
   git
@@ -50,6 +54,7 @@ apps=(oh-my-zsh
   tree
   wget
   youtube-dl
+  catimg
 )
 brew install ${apps[@]}
 
