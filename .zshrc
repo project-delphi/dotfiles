@@ -91,4 +91,6 @@ function start_rstudio {
     open $HOST
     echo "Notebook started at $HOST"
 }
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #####################################################################################################

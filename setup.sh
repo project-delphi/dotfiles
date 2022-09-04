@@ -99,7 +99,7 @@ cask_apps=(
   skype
   slack
   spotify
-  transmission-cli
+  transmission
   visual-studio-code
   vlc
   zoomus
