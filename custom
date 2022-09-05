@@ -1,0 +1,4 @@
+macchina
+[ -f ~/.dotfiles/pyenv ] && source ~/.dotfiles/pyenv
+[ -f ~/.dotfiles/fzf ] && source ~/.dotfiles/fzf
+[ -f ~/.dotfiles/functions ] && source ~/.dotfiles/functions
