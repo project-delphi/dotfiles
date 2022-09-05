@@ -29,7 +29,9 @@ git config --global user.email ravkalia@gmail.com
 
 echo "Installing other brew stuff..."
 
-apps=(oh-my-zsh
+apps=(
+  coreutils
+  cowsay
   fortune
   fzf
   git
@@ -56,9 +58,6 @@ brew install ${apps[@]}
 echo "Cleaning up brew"
 brew cleanup
 
-echo "Installing homebrew cask"
-brew install caskroom/cask/brew-cask
-
 echo "Making directories"
 mkdir -p $HOME/Projects/repos
 mkdir $HOME/Projects/data
@@ -71,19 +70,15 @@ cd ~
 git clone git@github.com:project-delphi/dotfiles.git $HOME/Projects/repos/.dotfiles
 cd  $HOME/Projects/repos/.dotfiles
 
-
-#Install Zsh & Oh My Zsh
+# Install Zsh & Oh My Zsh
 echo "Installing Oh My ZSH..."
 curl -L http://install.ohmyz.sh | sh
+$(brew --prefix)/opt/fzf/install
 
-echo "Setting up Oh My Zsh theme..."
+"OMZ: Download plugins"
+git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
-echo "Setting up Zsh plugins..."
-cd ~/.oh-my-zsh/custom/plugins
-git clone git://github.com/zsh-users/zsh-syntax-highlighting.git
-
-echo "Setting ZSH as shell..."
-chsh -s /bin/zsh
 
 # Apps
 cask_apps=(
@@ -108,19 +103,11 @@ cask_apps=(
 # Install apps to /Applications
 # Default is: /Users/$user/Applications
 echo "Installing apps with Cask..."
-brew install --cask --appdir="/Applications" ${cask_apps[@]} 
-
-brew link --cask alfred 
+brew reinstall --cask --appdir="/Applications" ${cask_apps[@]} 
 
 brew cleanup
 
-echo "Setting up PyEnv"
-
-echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
-echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
-echo '"$(pyenv init --path)"' >> ~/.zshrc
-echo 'eval "$(pyenv init -)"' >> ~/.zshrc
-echo 'eval "$(pyenv virtualenv-init -)"' > ~/.zshrc
+echo "Setting some Mac settings..."
 
 echo "Installing Python"
 
@@ -133,7 +120,8 @@ cd $HOME/Projects
 pyenv local Projects 
 cd -
 
-echo "Setting some Mac settings..."
+echo "Configuring fzf"
+$(brew --prefix)/opt/fzf/install
 
 #"Allow text selection in Quick Look"
 defaults write com.apple.finder QLEnableTextSelection -bool TRUE
@@ -156,14 +144,8 @@ defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 defaults write -g com.apple.trackpad.scaling 2
 defaults write -g com.apple.mouse.scaling 2.5
 
-#"Enabling subpixel font rendering on non-Apple LCDs"
-defaults write NSGlobalDomain AppleFontSmoothing -int 2
-
 #"Showing icons for hard drives, servers, and removable media on the desktop"
 defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-
-#"Showing all filename extensions in Finder by default"
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
 #"Disabling the warning when changing a file extension"
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
@@ -205,8 +187,6 @@ sudo pmset -a sms 0
 # http://www.cultofmac.com/221392/quick-hack-speeds-up-retina-macbooks-wake-from-sleep-os-x-tips/
 sudo pmset -a standbydelay 86400
 
-#"Disable annoying backswipe in Chrome"
-defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool false
 mkdir $HOME/Desktop/screenshots
 #"Setting screenshots location to ~/Desktop"
 defaults write com.apple.screencapture location -string "$HOME/Desktop/screenshots"
